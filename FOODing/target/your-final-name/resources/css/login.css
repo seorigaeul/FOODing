@@ -1,5 +1,9 @@
 @charset "UTF-8";
-
+section {
+    height: 600px;
+    align-content: center;
+    flex: 1;
+}
 
 .login-container {
     width: 100%;

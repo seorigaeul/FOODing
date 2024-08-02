@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -133,27 +134,30 @@ public class MemberController {
 
     // 회원 정보 조회
     @GetMapping("/member/view")
-    public String viewMember(@RequestParam("mid") String mid, Model model) {
-        Member member = memberService.findMemberById(mid);
-        if (member == null) {
+    public String viewMember(HttpSession session, Model model) {
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+        if (loggedInMember == null) {
             model.addAttribute("error", "회원 정보를 찾을 수 없습니다.");
-            return "error";
+            return "errorPage";
         } else {
-            model.addAttribute("member", member);
+            model.addAttribute("member", loggedInMember);
             return "viewMember";
         }
     }
 
     // 회원 정보 수정 폼 보여주기
-    @GetMapping("/member/edit/{mid}")
-    public String showEditForm(@PathVariable("mid") String mid, Model model) {
-        Member member = memberService.findMemberById(mid);
-        if (member == null) {
+    @GetMapping("/member/edit")
+    public String showEditForm( Model model, HttpSession session) {
+
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
+        if (loggedInMember == null) {
             return "redirect:/member/view";
 
         } else {
-            member.setMpass("");
-            model.addAttribute("member", member);
+
+            loggedInMember.setMpass("");
+            model.addAttribute("member", loggedInMember);
             return "editMember"; // 수정 폼으로 이동
         }
     }
@@ -161,14 +165,15 @@ public class MemberController {
     @PostMapping("/member/edit")
     public String updateMember(@ModelAttribute("member") @Valid Member updatedMember,
                                BindingResult bindingResult, Model model) {
+
+
         if (bindingResult.hasErrors()) {
             return "editMember"; // 입력 폼으로 다시 이동
         }
-
         Member existingMemberOpt = memberService.findMemberById(updatedMember.getMid());
         if (existingMemberOpt == null) {
             model.addAttribute("error", "회원 정보를 찾을 수 없습니다.");
-            return "error";
+            return "main";
         } else {
             Member existingMember = existingMemberOpt;
 
@@ -182,7 +187,7 @@ public class MemberController {
 
             memberService.updateMember(existingMember); // 회원 정보 업데이트
             model.addAttribute("message", "회원 정보가 성공적으로 수정되었습니다.");
-            return "redirect:/member/view?mid=" + updatedMember.getMid();
+            return "redirect:/member/view";
         }
     }
 
@@ -197,9 +202,16 @@ public class MemberController {
         return "myPage"; // 마이페이지 JSP 파일명
     }
     @PostMapping("/{mno}")
-    public String deleteMember(@PathVariable int mno) {
-        memberService.deleteMemberByMno(mno);
-        return "redirect:/deleteSuccess";
+    public String deleteMember(HttpSession session) {
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+        if (loggedInMember != null) {
+            int mno = loggedInMember.getMno();
+            memberService.deleteMemberByMno(mno);
+            session.invalidate(); // 세션 무효화
+            return "redirect:/deleteSuccess";
+        } else {
+            return "redirect:/login"; // 로그인 정보가 없을 경우 로그인 페이지로 리디렉션
+        }
     }
 
     @GetMapping("/deleteSuccess")

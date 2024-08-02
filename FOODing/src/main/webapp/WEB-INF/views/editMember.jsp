@@ -14,6 +14,7 @@
 <body>
 <c:import url = "/top.jsp" />
 
+<section>
 <div class="edit-container">
 <h2 class="head">회원 정보 수정</h2>
 <form:form action="${pageContext.request.contextPath}/member/edit" modelAttribute="member" method="post">
@@ -66,5 +67,5 @@
         <input type="submit" value="회원탈퇴">
     </form>
 </div>
-
+</section>
 <c:import url = "/bottom.jsp" />
