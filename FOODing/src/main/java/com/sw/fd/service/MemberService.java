@@ -32,10 +32,6 @@ public class MemberService {
         return null; // 로그인 실패
     }
 
-    public Member findMemberByMno(int mno) {
-        return memberRepository.findByMno(mno).orElse(null);
-    }
-
     public Member findMemberById(String mid) {
         return memberRepository.findByMid(mid).orElse(null);
     }
@@ -57,4 +53,28 @@ public class MemberService {
         memberRepository.deleteByMno(mno);
     }
 
+
+    public String findIdByMnameEmailAndPhone(String mname, String memail, String mphone) {
+        Member memberByEmail = memberRepository.findByMnameAndMemail(mname, memail);
+        Member memberByPhone = memberRepository.findByMnameAndMphone(mname, mphone);
+
+        if (memberByEmail != null && memberByPhone != null && memberByEmail.getMno() == memberByPhone.getMno()) {
+            return maskId(memberByEmail.getMid());
+        } else {
+            return null;
+        }
+    }
+
+    private String maskId(String id) {
+        if (id.length() <= 3) {
+            return id.charAt(0) + "**";
+        }
+        StringBuilder maskedId = new StringBuilder();
+        maskedId.append(id.charAt(0));
+        for (int i = 1; i < id.length() - 2; i++) {
+            maskedId.append("*");
+        }
+        maskedId.append(id.substring(id.length() - 2));
+        return maskedId.toString();
+    }
 }

@@ -190,7 +190,7 @@ public class MemberController {
             return "redirect:/member/view";
         }
     }
-
+    // 마이페이지
     @GetMapping("/myPage")
     public String showMyPage(HttpSession session, Model model) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
@@ -201,6 +201,8 @@ public class MemberController {
         model.addAttribute("loggedInMember", loggedInMember);
         return "myPage"; // 마이페이지 JSP 파일명
     }
+
+    // 회원 탈퇴
     @PostMapping("/{mno}")
     public String deleteMember(HttpSession session) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
@@ -222,5 +224,24 @@ public class MemberController {
             session.invalidate(); // 세션 무효화
         }
         return "deleteSuccess";
+    }
+
+    // ID 찾기
+    @GetMapping("/findID")
+    public String showFindId(){
+        return "findID";
+    }
+
+    @PostMapping("/findID")
+    public String findId(@RequestParam("mname") String mname, @RequestParam("memail") String memail, @RequestParam("mphone") String mphone, Model model) {
+        String mid = memberService.findIdByMnameEmailAndPhone(mname, memail, mphone);
+
+        if (mid != null) {
+            model.addAttribute("message", "ID 정보는: " + mid);
+        } else {
+            model.addAttribute("message", "가입된 정보가 없습니다.");
+        }
+
+        return "findIDResult";
     }
 }

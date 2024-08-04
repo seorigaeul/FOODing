@@ -22,4 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
 
     void deleteByMno(int mno);
+
+    Member findByMnameAndMemail(String mname, String memail);
+    Member findByMnameAndMphone(String mname, String mphone);
 }
