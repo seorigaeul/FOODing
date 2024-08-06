@@ -77,4 +77,8 @@ public class MemberService {
         maskedId.append(id.substring(id.length() - 2));
         return maskedId.toString();
     }
+
+    public Optional<Member> findByMember(String mid, String mname, String memail) {
+        return memberRepository.findByMidAndMnameAndMemail(mid, mname, memail);
+    }
 }

@@ -6,16 +6,17 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>ID 찾기</title>
+    <title>ID 찾기 결과</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/findID.css">
 </head>
 <body>
 <c:import url="/topNoneNav.jsp" />
 
 <section class="findID-section">
-    <h2>ID 찾기</h2>
+    <h2>ID 찾기 결과</h2>
 
     <p>${message}</p>
+    <a href="${pageContext.request.contextPath}/login">로그인</a>
     <a href="${pageContext.request.contextPath}/login">로그인</a>
 </section>
 

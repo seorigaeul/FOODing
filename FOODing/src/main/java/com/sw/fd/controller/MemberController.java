@@ -6,15 +6,22 @@ import com.sw.fd.repository.MemberRepository;
 import com.sw.fd.service.ApiService;
 import com.sw.fd.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
 
 @Controller
 public class MemberController {
@@ -24,6 +31,9 @@ public class MemberController {
 
     @Autowired
     private ApiService apiService;
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     @GetMapping("/registerSelect")
     public String selectRegister() {
@@ -147,7 +157,7 @@ public class MemberController {
 
     // 회원 정보 수정 폼 보여주기
     @GetMapping("/member/edit")
-    public String showEditForm( Model model, HttpSession session) {
+    public String showEditForm(Model model, HttpSession session) {
 
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
 
@@ -190,6 +200,7 @@ public class MemberController {
             return "redirect:/member/view";
         }
     }
+
     // 마이페이지
     @GetMapping("/myPage")
     public String showMyPage(HttpSession session, Model model) {
@@ -228,7 +239,7 @@ public class MemberController {
 
     // ID 찾기
     @GetMapping("/findID")
-    public String showFindId(){
+    public String showFindId() {
         return "findID";
     }
 
@@ -243,5 +254,74 @@ public class MemberController {
         }
 
         return "findIDResult";
+    }
+
+    //비밀번호 찾기
+    @GetMapping("/findPassAuth")
+    public String showFindPass() {
+        return "findPassAuth";
+    }
+
+    @PostMapping("/findPassAuth")
+    public String findIDAuth(@RequestParam("mid") String mid, Model model) {
+        if(memberService.isMidExists(mid)){
+            model.addAttribute("mid", mid);
+            return "findPass";
+        }
+        else{
+            model.addAttribute("message", "존재하지않는 ID 입니다.");
+            return "/findPassAuth";
+        }
+    }
+    //이메일 발송을 위한 정보 받기
+    @RequestMapping("/findPass")
+    public String findAuth(Member member, Model model) {
+        Map<String, Object> map = new HashMap<>();
+
+        // 사용자가 작성한 아이디를 기준으로 존재하는 사용자인지 확인한다.
+        Optional<Member> isUserOptional = memberService.findByMember(member.getMid(), member.getMname(), member.getMemail());
+
+        if (isUserOptional.isPresent()) { // 회원가입이 되어있는, 존재하는 사용자라면
+            Member isUser = isUserOptional.get();
+            Random r = new Random();
+            int num = r.nextInt(999999); // 랜덤 난수
+
+            if (isUser.getMemail().equals(member.getMemail())) { // 이메일 정보 또한 동일하다면
+                String setFrom = "fooding2441@gmail.com"; // 발신자 이메일
+                String tomail = isUser.getMemail(); // 수신자 이메일
+                String title = "[FOODing] 비밀번호 변경 인증 이메일입니다.";
+                String content = String.format("안녕하세요 %s님\nFOODing 비밀번호 찾기(변경) 인증번호는 %d입니다. \n 로그인 후 반드시 비밀번호를 변경하세요!", isUser.getMnick(), num);
+
+                member.setMpass(num+"");
+                try {
+                    MimeMessage msg = mailSender.createMimeMessage();
+                    MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true, "utf-8");
+
+                    msgHelper.setFrom(setFrom);
+                    msgHelper.setTo(tomail);
+                    msgHelper.setSubject(title);
+                    msgHelper.setText(content);
+
+                    // 메일 전송
+                    mailSender.send(msg);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+                // 성공적으로 메일을 보낸 경우
+                map.put("status", true);
+                map.put("num", num);
+                map.put("mid", isUser.getMid());
+                model.addAllAttributes(map);
+                model.addAttribute("message", "이메일 전송이 완료되었습니다");
+                return "findPass";
+            }
+        }
+
+        // 실패한 경우
+        map.put("status", false);
+        model.addAllAttributes(map);
+        model.addAttribute("message", "이메일 전송이 실패하였습니다");
+        return "findPass";
     }
 }
