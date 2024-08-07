@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>ID 찾기 결과</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/findID.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/findIDResult.css">
 </head>
 <body>
 <c:import url="/topNoneNav.jsp" />

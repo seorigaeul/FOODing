@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>비밀번호 찾기</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/findID.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/findPass.css">
 </head>
 <body>
 <c:import url="/topNoneNav.jsp" />
@@ -15,15 +15,36 @@
 <section>
     <div class="container">
         <h2>비밀번호 찾기</h2>
-        <form action="${pageContext.request.contextPath}/findPassAuth" method="post">
+        <form action="${pageContext.request.contextPath}/findPassEmail" method="post">
             <div class="form-group">
                 <label for="mid">ID:</label>
-                <input type="text" id="mid" name="mid" required>
+                <input type="text" id="mid" name="mid" value="${mid}" required>
             </div>
+            <div class="form-group">
+                <label for="mname">이름:</label>
+                <input type="text" id="mname" name="mname" required>
+            </div>
+            <div class="form-group">
+                <label for="memail">이메일:</label>
+                <input type="email" id="memail" name="memail" required>
+            </div>
+
+            <button type="submit" class="btnPass">비밀번호 인증번호 받기</button>
+            <c:if test="${not empty message}">
                 <p>${message}</p>
+            </c:if>
+        </form>
 
-
-            <button type="submit" class="btnPass">다음</button>
+        <form action="${pageContext.request.contextPath}/findPassAuth" method="post">
+            <div>
+                <label>인증번호</label>
+                <input type="text" id ="auth" name="auth">
+            </div>
+            <c:if test="${not empty messageAuth}">
+                <p>${messageAuth}</p>
+            </c:if>
+            <input type="hidden" id="num" name="num" value="${num}">
+            <button type="submit" class="btnAuth">인증받기</button>
         </form>
     </div>
 </section>

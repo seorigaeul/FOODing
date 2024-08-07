@@ -257,25 +257,24 @@ public class MemberController {
     }
 
     //비밀번호 찾기
-    @GetMapping("/findPassAuth")
+    @GetMapping("/findPass_IdAuth")
     public String showFindPass() {
-        return "findPassAuth";
+        return "findPass_IdAuth";
     }
 
-    @PostMapping("/findPassAuth")
-    public String findIDAuth(@RequestParam("mid") String mid, Model model) {
+    @PostMapping("/findPass_IdAuth")
+    public String findPassIDAuth(@RequestParam("mid") String mid, Model model) {
         if(memberService.isMidExists(mid)){
             model.addAttribute("mid", mid);
-            return "findPass";
+            return "findPassAuth";
         }
         else{
             model.addAttribute("message", "존재하지않는 ID 입니다.");
-            return "/findPassAuth";
+            return "findPass_IdAuth";
         }
     }
-    //이메일 발송을 위한 정보 받기
-    @RequestMapping("/findPass")
-    public String findAuth(Member member, Model model) {
+    @RequestMapping("/findPassEmail")
+    public String findPassEmail(Member member, Model model) {
         Map<String, Object> map = new HashMap<>();
 
         // 사용자가 작성한 아이디를 기준으로 존재하는 사용자인지 확인한다.
@@ -313,8 +312,9 @@ public class MemberController {
                 map.put("num", num);
                 map.put("mid", isUser.getMid());
                 model.addAllAttributes(map);
+                model.addAttribute("num", num);
                 model.addAttribute("message", "이메일 전송이 완료되었습니다");
-                return "findPass";
+                return "findPassAuth";
             }
         }
 
@@ -322,6 +322,20 @@ public class MemberController {
         map.put("status", false);
         model.addAllAttributes(map);
         model.addAttribute("message", "이메일 전송이 실패하였습니다");
-        return "findPass";
+        return "findPassAuth";
+    }
+
+    @PostMapping("/findPassAuth")
+    public String findPassAuth(@RequestParam("auth") String auth, @RequestParam("num") int num, Model model) {
+        System.out.println("auth값 : " + auth);
+        System.out.println("num값 : " + num);
+        if (Integer.parseInt(auth) == num) {
+            model.addAttribute("messageAuth", "인증에 성공했습니다.");
+            return "chagePass"; // 성공 페이지로 이동
+        } else {
+            model.addAttribute("messageAuth", "인증번호가 일치하지 않습니다.");
+            model.addAttribute("num", num); // 다시 인증번호를 전달
+            return "findPassAuth"; // 다시 인증번호 입력 폼으로 이동
+        }
     }
 }
