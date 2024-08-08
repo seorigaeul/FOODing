@@ -248,7 +248,9 @@ public class MemberController {
         String mid = memberService.findIdByMnameEmailAndPhone(mname, memail, mphone);
 
         if (mid != null) {
-            model.addAttribute("message", "ID 정보는: " + mid);
+            model.addAttribute("mnamemessage", mname + "님의 ID는 ");
+            model.addAttribute("IDmessage", mid);
+            model.addAttribute("message", "입니다.");
         } else {
             model.addAttribute("message", "가입된 정보가 없습니다.");
         }

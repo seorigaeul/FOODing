@@ -4,17 +4,11 @@ section {
     align-content: center;
     flex: 1;
 }
-
-.login-container {
-    width: 100%;
-    height: 100%;
-}
-
-.form-container {
+.findPass_IdAuth-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 300px;
+    width: 350px;
     margin: 150px auto;
     background-color: #fff;
     padding: 20px;
@@ -23,25 +17,22 @@ section {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.login-container h2 {
+.findPass_IdAuth-container h2 {
     color : saddlebrown;
     font-weight: bold;
     text-align: center;
 }
-
-.error-message {
-    text-align: center;
-    color:red;
+.findPass_IdAuth-container form {
+    width: 100%;
 }
-.login-container label {
+
+.findPass_IdAuth-container label {
     display: block;
     margin-bottom: 5px;
     color: #666;
 }
 
-.login-container input[type="text"],
-.login-container input[type="password"],
-.login-container input[type="submit"] {
+.findPass_IdAuth-container input[type="text"] {
     width: 100%;
     padding: 12px;
     box-sizing: border-box;
@@ -51,26 +42,14 @@ section {
     border-radius: 3px;
 }
 
-.login-container .form-step {
-    display: none; /* 초기에는 두 번째 폼 숨김 */
-}
-
-.button {
+.findPass_IdAuth-container .btnPass {
     margin-top: 10px;
+    width: 100%;
     padding: 8px 16px;
-    background-color: #f5ba00;
+    background-color: saddlebrown;
     color: white;
     font-style: revert;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
-
-.find-links {
-    text-align: center;
-}
-
-.find-links a:link { color : saddlebrown; text-decoration : none; }
-.find-links a:visited { color : saddlebrown; text-decoration : none; }
-.find-links a:active { color : orange; text-decoration : none; }
-.find-links a:hover { color : #ffea00;; text-decoration : none; }

@@ -12,27 +12,26 @@
 <body>
 <c:import url="/topNoneNav.jsp" />
 
-<section class="findID-section">
+<section>
+    <div class="findID-container">
     <h2>ID 찾기</h2>
-    <form action="${pageContext.request.contextPath}/findID" method="post">
-        <table>
-            <tr>
-                <td><label for="mname">이름 : </label></td>
-                <td><input type="text" id="mname" name="mname" required></td>
-            </tr>
-            <tr>
-                <td><label for="memail">이메일 : </label></td>
-                <td><input type="text" id="memail" name="memail" required></td>
-            </tr>
-            <tr>
-                <td><label for="mphone">전화번호 : </label>
-                <td><input type="text" id="mphone" name="mphone" required></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="ID 찾기"></td>
-            </tr>
-        </table>
+    <form class="form-container" action="${pageContext.request.contextPath}/findID" method="post">
+
+            <div>
+                <label for="mname">이름</label>
+                <input type="text" id="mname" name="mname" required>
+
+                <label for="memail">이메일</label>
+                <input type="text" id="memail" name="memail" required>
+
+               <label for="mphone">전화번호</label>
+                <input type="text" id="mphone" name="mphone" required>
+
+                <input class="button" type="submit" value="ID 찾기">
+            </div>
+
     </form>
+    </div>
 </section>
 
 <c:import url="/bottom.jsp" />

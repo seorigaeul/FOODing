@@ -7,23 +7,24 @@
 <head>
     <meta charset="UTF-8">
     <title>비밀번호 찾기</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/findPassAuth.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/findPass_IdAuth.css">
 </head>
 <body>
 <c:import url="/topNoneNav.jsp" />
 
 <section>
-    <div class="container">
+    <div class="findPass_IdAuth-container">
         <h2>비밀번호 찾기</h2>
         <form action="${pageContext.request.contextPath}/findPass_IdAuth" method="post">
-            <div class="form-group">
-                <label for="mid">ID:</label>
+            <div>
+                <label for="mid">ID</label>
                 <input type="text" id="mid" name="mid" required>
-            </div>
+
                 <p>${message}</p>
 
 
-            <button type="submit" class="btnPass">다음</button>
+                <button type="submit" class="btnPass">다음</button>
+            </div>
         </form>
     </div>
 </section>
