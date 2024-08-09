@@ -112,14 +112,14 @@
       <artifactId>httpclient</artifactId>
       <version>4.5.13</version>
     </dependency>
-<!--json 관련 의존성-->
+    <!--json 관련 의존성-->
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20220320</version>
     </dependency>
 
-    <!-- 이메일 -->
+    <!-- 이메일(정희씨) -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
@@ -130,10 +130,7 @@
       <artifactId>javax.mail</artifactId>
       <version>1.6.2</version>
     </dependency>
-
   </dependencies>
-
-
 
   <build>
     <finalName>your-final-name</finalName>
