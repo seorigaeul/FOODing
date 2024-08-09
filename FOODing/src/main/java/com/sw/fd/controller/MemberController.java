@@ -268,6 +268,7 @@ public class MemberController {
     public String findPassIDAuth(@RequestParam("mid") String mid, Model model) {
         if(memberService.isMidExists(mid)){
             model.addAttribute("mid", mid);
+
             return "findPassAuth";
         }
         else{
@@ -276,7 +277,7 @@ public class MemberController {
         }
     }
     @RequestMapping("/findPassEmail")
-    public String findPassEmail(Member member, Model model) {
+    public String findPassEmail(@RequestParam("mid") String mid, @RequestParam("mname") String mname, @RequestParam("memail") String memail, Member member, Model model) {
         Map<String, Object> map = new HashMap<>();
 
         // 사용자가 작성한 아이디를 기준으로 존재하는 사용자인지 확인한다.
@@ -312,10 +313,15 @@ public class MemberController {
                 // 성공적으로 메일을 보낸 경우
                 map.put("status", true);
                 map.put("num", num);
-                map.put("mid", isUser.getMid());
+                map.put("mid", mid);
+                map.put("mname", mname);
+                map.put("memail", memail);
                 model.addAllAttributes(map);
                 model.addAttribute("num", num);
+                model.addAttribute("mno", isUser.getMno());
                 model.addAttribute("message", "이메일 전송이 완료되었습니다");
+
+                System.out.println("num값 : " + num);
                 return "findPassAuth";
             }
         }
@@ -328,16 +334,43 @@ public class MemberController {
     }
 
     @PostMapping("/findPassAuth")
-    public String findPassAuth(@RequestParam("auth") String auth, @RequestParam("num") int num, Model model) {
-        System.out.println("auth값 : " + auth);
-        System.out.println("num값 : " + num);
+    public String findPassAuth(@RequestParam("mno") int mno, @RequestParam("auth") String auth, @RequestParam("num") int num, Model model) {
+
         if (Integer.parseInt(auth) == num) {
+            model.addAttribute("mno", mno);
             model.addAttribute("messageAuth", "인증에 성공했습니다.");
-            return "chagePass"; // 성공 페이지로 이동
+
+            return "redirect:/changePass"; // 성공 페이지로 이동
         } else {
             model.addAttribute("messageAuth", "인증번호가 일치하지 않습니다.");
             model.addAttribute("num", num); // 다시 인증번호를 전달
-            return "findPassAuth"; // 다시 인증번호 입력 폼으로 이동
+            return "findPassAuth";
         }
+    }
+    // 비밀번호 변경
+     @GetMapping("/changePass")
+    public String showChangePassForm(@RequestParam("mno") int mno, Model model) {
+
+        Member member = memberService.findMemberByMno(mno);
+         member.setMpass("");
+        model.addAttribute("member", member);
+        return "changePass";
+    }
+
+
+   // 비밀번호 변경 요청을 처리하는 POST 메서드
+    @PostMapping("/changePass")
+    public String changePass(@RequestParam("mno") int mno, @RequestParam("mpass") String newPass, Model model) {
+
+        Member member = memberService.findMemberByMno(mno);
+        if (member == null) {
+            model.addAttribute("error", "회원 정보를 찾을 수 없습니다.");
+            return "changePass";
+        }
+
+        member.setMpass(newPass);
+        memberService.updateMember(member);
+        model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
+        return "login";
     }
 }
