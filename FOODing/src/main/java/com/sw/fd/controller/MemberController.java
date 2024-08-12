@@ -8,6 +8,7 @@ import com.sw.fd.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -79,6 +80,10 @@ public class MemberController {
             model.addAttribute("memberType", "손님");
             return "registerUser";
         }
+        // 비밀번호 해시화
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(member.getMpass());
+        member.setMpass(encodedPassword);
 
         memberService.saveMember(member);
         model.addAttribute("message", "일반 회원 가입 성공! 환영합니다!");
@@ -105,6 +110,10 @@ public class MemberController {
             model.addAttribute("memberType", "사장님");
             return "registerOwner";
         }
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(member.getMpass());
+        member.setMpass(encodedPassword);
 
         memberService.saveMember(member);
         model.addAttribute("message", "사장님 회원 가입 성공! 환영합니다!");
@@ -188,7 +197,7 @@ public class MemberController {
             Member existingMember = existingMemberOpt;
 
             // 기존 정보를 새로 입력된 정보로 업데이트
-            existingMember.setMpass(updatedMember.getMpass());
+//            existingMember.setMpass(updatedMember.getMpass());
             existingMember.setMnick(updatedMember.getMnick());
             existingMember.setMbirth(updatedMember.getMbirth());
             existingMember.setMphone(updatedMember.getMphone());
@@ -199,6 +208,48 @@ public class MemberController {
             model.addAttribute("message", "회원 정보가 성공적으로 수정되었습니다.");
             return "redirect:/member/view";
         }
+    }
+
+    @GetMapping("/editChangePass")
+    public String showEditPassForm(Model model, HttpSession session) {
+
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
+        if (loggedInMember == null) {
+            return "editMember";
+
+        } else {
+
+            model.addAttribute("member", loggedInMember);
+            return "editChangePass"; // 수정 폼으로 이동
+        }
+    }
+    @PostMapping("/editChangePassSave")
+    public String updatePassword(@RequestParam("currentPassword") String currentPassword, @ModelAttribute("member") @Valid Member updatedMember,
+                               Model model, HttpSession session) {
+
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
+        if (loggedInMember == null){
+            model.addAttribute("error", "회원 정보를 찾을 수 없습니다.");
+            return "editChangePass";
+        }
+
+        Member nowMember = memberService.findMemberById(loggedInMember.getMid());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (!passwordEncoder.matches(currentPassword, nowMember.getMpass())) {
+            model.addAttribute("error", "현재 비밀번호가 올바르지 않습니다.");
+
+            return "editChangePass";
+        }
+
+
+        loggedInMember.setMpass(passwordEncoder.encode(updatedMember.getMpass()));
+
+        memberService.updateMember(loggedInMember); // 회원 정보 업데이트
+        model.addAttribute("message", "비밀번호가 성공적으로 수정되었습니다.");
+        return "redirect:/member/edit";
+
     }
 
     // 마이페이지
@@ -350,6 +401,10 @@ public class MemberController {
         }
     }
     // 비밀번호 변경
+    @GetMapping("/changePass")
+    public String showChangePass() {
+        return "changePass";
+    }
 
     @PostMapping("/changePassSave")
     public String changePass(@RequestParam("mno") int mno, @RequestParam("mpass") String newPass, Model model) {
