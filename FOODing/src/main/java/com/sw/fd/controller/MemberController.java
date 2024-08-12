@@ -214,7 +214,7 @@ public class MemberController {
     }
 
     // 회원 탈퇴
-    @PostMapping("/{mno}")
+    @PostMapping("/delete{mno}")
     public String deleteMember(HttpSession session) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
         if (loggedInMember != null) {
@@ -334,13 +334,15 @@ public class MemberController {
     }
 
     @PostMapping("/findPassAuth")
-    public String findPassAuth(@RequestParam("mno") int mno, @RequestParam("auth") String auth, @RequestParam("num") int num, Model model) {
+    public String findPassAuth(@RequestParam("mno") int mno, @RequestParam("auth") String auth, @RequestParam("num") int num, Model model, HttpSession session) {
 
         if (Integer.parseInt(auth) == num) {
             model.addAttribute("mno", mno);
             model.addAttribute("messageAuth", "인증에 성공했습니다.");
-
-            return "redirect:/changePass"; // 성공 페이지로 이동
+            Member member = memberService.findMemberByMno(mno);
+            member.setMpass("");
+            model.addAttribute("member", member);
+            return "changePass"; // 성공 페이지로 이동
         } else {
             model.addAttribute("messageAuth", "인증번호가 일치하지 않습니다.");
             model.addAttribute("num", num); // 다시 인증번호를 전달
@@ -348,18 +350,8 @@ public class MemberController {
         }
     }
     // 비밀번호 변경
-     @GetMapping("/changePass")
-    public String showChangePassForm(@RequestParam("mno") int mno, Model model) {
 
-        Member member = memberService.findMemberByMno(mno);
-         member.setMpass("");
-        model.addAttribute("member", member);
-        return "changePass";
-    }
-
-
-   // 비밀번호 변경 요청을 처리하는 POST 메서드
-    @PostMapping("/changePass")
+    @PostMapping("/changePassSave")
     public String changePass(@RequestParam("mno") int mno, @RequestParam("mpass") String newPass, Model model) {
 
         Member member = memberService.findMemberByMno(mno);
@@ -371,6 +363,6 @@ public class MemberController {
         member.setMpass(newPass);
         memberService.updateMember(member);
         model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
-        return "login";
+        return "redirect:/login";
     }
 }

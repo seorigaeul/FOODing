@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="/WEB-INF/views/includes/cacheControl.jsp" %>
@@ -17,7 +18,7 @@
 <section>
     <div class="changePass-container">
     <h2>비밀번호 변경</h2>
-        <form:form action="${pageContext.request.contextPath}/changePass" modelAttribute="member" method="post" onsubmit="return validatePassForm()">
+        <form:form action="${pageContext.request.contextPath}/changePassSave" modelAttribute="member" method="post" onsubmit="return validatePassForm()">
 
             <input type="hidden" name="mno" value="${member.mno}" />
             <form:label path="mpass">비밀번호</form:label>
