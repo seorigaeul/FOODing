@@ -1,4 +1,3 @@
-var passwordChecked = false;
 /* 회원가입 & 개인정보 수정 창의 비밀번호 확인*/
 function validatePassword() {
     var password = document.getElementById("mpass").value;
@@ -7,18 +6,17 @@ function validatePassword() {
     if (password === confirmPassword) {
         message.style.color = "green";
         message.innerHTML = "비밀번호가 일치합니다.";
-        passwordChecked = true;
     } else {
         message.style.color = "red";
         message.innerHTML = "비밀번호가 일치하지 않습니다.";
-        passwordChecked = false;
     }
 }
 
-
-function validatePassForm() {
-    if (!passwordChecked) {
-        alert("비밀번호 확인을 완료해주세요.");
+function validateForm() {
+    var password = document.getElementById("mpass").value;
+    var confirmPassword = document.getElementById("mpassConfirm").value;
+    if (password !== confirmPassword) {
+        alert("비밀번호가 일치하지 않습니다.");
         return false;
     }
     return true;
@@ -48,10 +46,7 @@ function validateForm() {
             valid = false;
         }
     });
-    if (!passwordChecked) {
-        alert("비밀번호 확인을 완료해주세요.");
-        return false;
-    }
+
     return valid;
 }
 

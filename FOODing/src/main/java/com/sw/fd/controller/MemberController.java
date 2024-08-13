@@ -155,12 +155,19 @@ public class MemberController {
     @GetMapping("/member/view")
     public String viewMember(HttpSession session, Model model) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
         if (loggedInMember == null) {
             model.addAttribute("error", "회원 정보를 찾을 수 없습니다.");
             return "errorPage";
         } else {
-            model.addAttribute("member", loggedInMember);
-            return "viewMember";
+            if (!memberService.isMnoExists(loggedInMember.getMno())) {
+                model.addAttribute("error", "회원 정보를 찾을 수 없습니다.");
+                return "errorPage";
+            }else {
+                Member dbMember = memberService.findMemberByMno(loggedInMember.getMno());
+                model.addAttribute("member", dbMember);
+                return "viewMember";
+            }
         }
     }
 
@@ -415,7 +422,10 @@ public class MemberController {
             return "changePass";
         }
 
-        member.setMpass(newPass);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPass);
+        member.setMpass(encodedPassword);
+
         memberService.updateMember(member);
         model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
         return "redirect:/login";

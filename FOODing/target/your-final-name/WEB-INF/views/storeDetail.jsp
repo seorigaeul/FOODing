@@ -35,25 +35,25 @@
         </c:choose>
         <div class="store-head">
             <div class="head-elements">
-            <a id="star-area" class="star-area"><img class="pickStar" src="${pageContext.request.contextPath}/resources/images/bookmark_icon.png" alt="StarE"/></a>
-            <div class ="title-area">
-                <p id="store-title">${store.sname}</p>
-                <c:choose>
-                    <c:when test="${store.scoreArg != 0}">
-                        <img id="score-img" src="${pageContext.request.contextPath}/resources/images/score_icon.png"/>
-                        <p id="store-score"><fmt:formatNumber value="${store.scoreArg}" pattern="0.0"/>점</p>
-                    </c:when>
-                </c:choose>
-            </div>
-            </div>
-            <div class="tag-area">
-                <div class="tag-area">
-                    <c:forEach var="stag" items="${storeTags}">
-                        <c:if test="${stag.tagCount > (rCount*0.3)}">
-                            <button type="button" class="main-tag-button">${stag.tag.ttag}</button>
-                        </c:if>
-                    </c:forEach>
+                <a id="star-area" class="star-area" onclick="openPickWindow()">
+                    <img class="pickStar" src="${pageContext.request.contextPath}/resources/images/bookmark_icon.png" alt="StarE"/>
+                </a>
+                <div class ="title-area">
+                    <p id="store-title">${store.sname}</p>
+                    <c:choose>
+                        <c:when test="${store.scoreArg != 0}">
+                            <img id="score-img" src="${pageContext.request.contextPath}/resources/images/score_icon.png"/>
+                            <p id="store-score"><fmt:formatNumber value="${store.scoreArg}" pattern="0.0"/>점</p>
+                        </c:when>
+                    </c:choose>
                 </div>
+            </div>
+            <div class="stag-area">
+                <c:forEach var="stag" items="${storeTags}">
+                    <c:if test="${stag.tagCount > (rCount*0.3)}">
+                        <button type="button" class="main-tag-button">${stag.tag.ttag}</button>
+                    </c:if>
+                </c:forEach>
             </div>
             <p id="store-explain">${store.seg}</p>
         </div>
@@ -125,6 +125,14 @@
             }
         });
     });*/
+    function toggleTagList() {
+        var tagList = document.getElementById('tagList');
+        if (tagList.style.display === 'none' || tagList.style.display === '') {
+            tagList.style.display = 'block';
+        } else {
+            tagList.style.display = 'none';
+        }
+    }
 
     var selectedTags = [];
 
@@ -203,6 +211,19 @@
         window.open(url, name, specs);
     }
 
+    function openReportWindow(rno, sno) {
+        var url = "${pageContext.request.contextPath}/review/report?rno=" + rno +  "&sno=" + sno;
+        var name = "reportReview";
+        var specs = "width=500,height=350";
+        window.open(url, name, specs);
+    }
+
+    function openPickWindow(sno, pfno) {
+        var url = "${pageContext.request.contextPath}/pick?sno=" + sno + "&pfno=" + pfno;
+        var name = "pickFolder";
+        var specs = "width=500,height=350";
+        window.open(url, name, specs);
+    }
     initializeReviewScript();
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -275,4 +296,3 @@
 </script>
 <!-- 하단 내비게이션 바 -->
 <c:import url="/bottom.jsp" />
-
