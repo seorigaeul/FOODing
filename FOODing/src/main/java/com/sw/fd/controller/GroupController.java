@@ -2,9 +2,11 @@ package com.sw.fd.controller;
 
 import com.sw.fd.dto.GroupDTO;
 import com.sw.fd.dto.MemberGroupDTO;
+import com.sw.fd.entity.Board;
 import com.sw.fd.entity.Group;
 import com.sw.fd.entity.Member;
 import com.sw.fd.entity.MemberGroup;
+import com.sw.fd.service.BoardService;
 import com.sw.fd.service.GroupService;
 import com.sw.fd.service.MemberGroupService;
 import com.sw.fd.service.MemberService;
@@ -30,6 +32,9 @@ public class GroupController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private BoardService boardService;
 
     @GetMapping("/groupList")
     public String groupList(Model model, HttpSession session) {
@@ -90,6 +95,9 @@ public class GroupController {
         group.setGno(createdGroupDTO.getGno());
         group.setGname(createdGroupDTO.getGname());
         memberGroupService.addMemberToGroup(member, group, 1);
+//-----------------------------------------모임 생성 시 게시판 같이 생성------------------------------
+        int gno = group.getGno();
+        boardService.createBoard(gno);
 
         return "redirect:/groupList";
     }

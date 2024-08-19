@@ -32,7 +32,7 @@
                 <c:forEach var="memberGroup" items="${leaderList}" varStatus="status">
                     <tr>
                         <td>${status.index + 1}</td>
-                        <td><a href="${pageContext.request.contextPath}/board">${memberGroup.group.gname}</a></td>
+                        <td><a href="${pageContext.request.contextPath}/board?gno=${memberGroup.group.gno}">${memberGroup.group.gname}</a></td>
                         <td>${memberGroup.member.mnick}</td>
                         <td>${memberGroup.group.gdate}</td>
                     </tr>

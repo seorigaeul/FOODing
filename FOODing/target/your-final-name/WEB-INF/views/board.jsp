@@ -6,30 +6,38 @@
 <head>
     <meta charset = "UTF-8">
     <title>FOODing 모임 게시판</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board.css">
+
 </head>
 <body>
 <c:import url = "/top.jsp" />
-<section>
-    <c:forEach var="memberGroup" items="${leaderList}" varStatus="status">
-
-    <h1>${memberGroup.group.gname} 게시판</h1>
-    <table>
-        <thead>
-            <td>번호</td>
-            <td>글제목</td>
-            <td>글쓴이</td>
-            <td>작성날짜</td>
-        </thead>
-        <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-
-    </table>
+<section class="board-section">
+    <div class="board-container">
+    <c:forEach var="board" items="${board}">
+        <h1>${board.bname}</h1>
+        <button>글쓰기</button>
     </c:forEach>
+        <table>
+            <thead>
+                <td>번호</td>
+                <td>글제목</td>
+                <td>글쓴이</td>
+                <td>작성날짜</td>
+            </thead>
+            <tbody>
+            <c:forEach var="write" items="${write}">
+                    <tr>
+                        <td>${write.wno}</td>
+                        <td>${write.wtitle}</td>
+                        <td>${write.wcontent}</td>
+                        <td>${write.wdate}</td>
+                    </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+        <input type="text">
+        <button>검색</button>
+        <button>수정</button>
+    </div>
 </section>
 <c:import url = "/bottom.jsp" />
