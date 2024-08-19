@@ -5,10 +5,8 @@ import com.sw.fd.dto.MemberGroupDTO;
 import com.sw.fd.entity.Board;
 import com.sw.fd.entity.Member;
 import com.sw.fd.entity.MemberGroup;
-import com.sw.fd.service.BoardService;
-import com.sw.fd.service.GroupService;
-import com.sw.fd.service.MemberGroupService;
-import com.sw.fd.service.MemberService;
+import com.sw.fd.entity.Write;
+import com.sw.fd.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +27,9 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+    @Autowired
+    private WriteService writeService;
+
     @GetMapping("/board")
     public String showBoard(HttpServletRequest request, Model model) {
         String gnumber = request.getParameter("gno");
@@ -37,13 +38,16 @@ public class BoardController {
         if (gnumber != null) {
             try{
                 int gno = Integer.parseInt(gnumber);
-                
                 GroupDTO group = groupService.getGroupById(gno);
-                int bno = gno;
-                List<Board> board = boardService.getBoardByBno(bno);
-                
+                List<Board> boards = boardService.getBoardByGroupGno(gno);
+
+                List<Write> writes = writeService.getWriteByBoardBno(boards.get(0).getBno());
+
+
+
                 if (group != null) {
-                    model.addAttribute("board", board);
+                    model.addAttribute("board", boards.get(0));
+                    model.addAttribute("writes", writes);
                 }else{
                     model.addAttribute("error", "찾을 수 없는 모임");
                 }
@@ -54,10 +58,7 @@ public class BoardController {
             model.addAttribute("error", "모임 번호가 없음");
         }
 
-        int gBoard = Integer.parseInt(gnumber);
-        List<Board> board = boardService.getBoardByGroupGno(gBoard);
 
-        model.addAttribute("board", board);
         return "board";
     }
 }

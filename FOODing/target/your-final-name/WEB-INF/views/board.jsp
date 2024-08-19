@@ -13,10 +13,13 @@
 <c:import url = "/top.jsp" />
 <section class="board-section">
     <div class="board-container">
-    <c:forEach var="board" items="${board}">
         <h1>${board.bname}</h1>
-        <button>글쓰기</button>
-    </c:forEach>
+        <button><a href="${pageContext.request.contextPath}/write">글쓰기</a></button>
+        <c:choose>
+        <c:when test="${writes==null}">
+            <p>게시물이 존재하지 않습니다.</p>
+        </c:when>
+        <c:otherwise>
         <table>
             <thead>
                 <td>번호</td>
@@ -25,14 +28,17 @@
                 <td>작성날짜</td>
             </thead>
             <tbody>
-            <c:forEach var="write" items="${write}">
+
+            <c:forEach var="write" items="${writes}">
                     <tr>
                         <td>${write.wno}</td>
-                        <td>${write.wtitle}</td>
-                        <td>${write.wcontent}</td>
+                        <td><a href="#">${write.wtitle}</a></td>
+                        <td>${write.member.mnick}</td>
                         <td>${write.wdate}</td>
                     </tr>
             </c:forEach>
+            </c:otherwise>
+            </c:choose>
             </tbody>
         </table>
         <input type="text">

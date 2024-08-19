@@ -12,5 +12,4 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     List<Board> findByGroupGno(int gno);
 
-    List<Board> findByBno(int bno);
 }

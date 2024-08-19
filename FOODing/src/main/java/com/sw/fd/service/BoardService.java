@@ -20,7 +20,6 @@ public class BoardService {
 
     public List<Board> getBoardByGroupGno(int gno) {return boardRepository.findByGroupGno(gno); }
 
-    public List<Board> getBoardByBno(int bno){return boardRepository.findByBno(bno);}
 
     public void createBoard(int gno) {
         Board board = new Board();
@@ -38,4 +37,5 @@ public class BoardService {
         boardRepository.save(board);
 
     }
+
 }
