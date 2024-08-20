@@ -19,7 +19,7 @@
         <form:form action="${pageContext.request.contextPath}/submitWrite" modelAttribute="write" method="post">
         <table>
             <tr>
-                <td>닉네임 : ${member}</td>
+                <td>글쓴이 : ${member}</td>
             </tr>
             <tr>
                 <td><form:input path="wtitle" title="글 제목" placeholder="글 제목"/></td>
@@ -27,11 +27,12 @@
             <tr>
                 <td><form:textarea path="wcontent" placeholder="글 내용"/></td>
             </tr>
-
         </table>
             <form:hidden path="board.bno" value="${bno}" />
 
-        <button type="submit">글쓰기</button>
+        <div class="button">
+            <button type="submit">글쓰기</button>
+        </div>
         </form:form>
     </div>
 

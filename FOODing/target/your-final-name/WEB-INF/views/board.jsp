@@ -16,7 +16,9 @@
 
         <h1>${board.bname}</h1>
         <c:forEach var="boardWrite" items="${boardWrite}" varStatus="status">
-            <button><a href="${pageContext.request.contextPath}/write?bno=${boardWrite.bno}">글쓰기</a></button>
+            <div class="btnwrite">
+                <button><a href="${pageContext.request.contextPath}/write?bno=${boardWrite.bno}">글쓰기</a></button>
+            </div>
         </c:forEach>
         <c:choose>
         <c:when test="${writes==null}">
@@ -44,9 +46,9 @@
             </c:choose>
             </tbody>
         </table>
+        <div class="btnupdate"><button>수정</button></div>
         <input type="text">
-        <button>검색</button>
-        <button>수정</button>
+        <span class="btnsearch"><button>검색</button></span>
     </div>
 </section>
 <c:import url = "/bottom.jsp" />

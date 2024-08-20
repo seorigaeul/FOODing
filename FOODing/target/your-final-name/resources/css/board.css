@@ -16,9 +16,13 @@
 }
 
 .board-container h1 {
-    font-size: 24px;
     color: #333333;
     margin-bottom: 20px;
+}
+
+.board-container .btnwrite {
+    display: flex;
+    justify-content: end;
 }
 
 .board-container table {
@@ -55,4 +59,9 @@
 
 .board-container table tbody td:first-child {
     text-align: center;
+}
+
+.board-container .btnupdate {
+    display: flex;
+    justify-content: end;
 }
