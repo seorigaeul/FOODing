@@ -13,8 +13,11 @@
 <c:import url = "/top.jsp" />
 <section class="board-section">
     <div class="board-container">
+
         <h1>${board.bname}</h1>
-        <button><a href="${pageContext.request.contextPath}/write">글쓰기</a></button>
+        <c:forEach var="boardWrite" items="${boardWrite}" varStatus="status">
+            <button><a href="${pageContext.request.contextPath}/write?bno=${boardWrite.bno}">글쓰기</a></button>
+        </c:forEach>
         <c:choose>
         <c:when test="${writes==null}">
             <p>게시물이 존재하지 않습니다.</p>
@@ -34,7 +37,7 @@
                         <td>${write.wno}</td>
                         <td><a href="#">${write.wtitle}</a></td>
                         <td>${write.member.mnick}</td>
-                        <td>${write.wdate}</td>
+                        <td>${write.dateToString}</td>
                     </tr>
             </c:forEach>
             </c:otherwise>

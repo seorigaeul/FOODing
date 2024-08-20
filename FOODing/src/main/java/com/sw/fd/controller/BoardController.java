@@ -33,20 +33,18 @@ public class BoardController {
     @GetMapping("/board")
     public String showBoard(HttpServletRequest request, Model model) {
         String gnumber = request.getParameter("gno");
+        int gno = Integer.parseInt(gnumber);
 
+        GroupDTO group = groupService.getGroupById(gno);
+        List<Board> boards = boardService.getBoardByGroupGno(gno);
+        List<Write> writes = writeService.getWriteByBoardBno(boards.get(0).getBno());
 
         if (gnumber != null) {
             try{
-                int gno = Integer.parseInt(gnumber);
-                GroupDTO group = groupService.getGroupById(gno);
-                List<Board> boards = boardService.getBoardByGroupGno(gno);
-
-                List<Write> writes = writeService.getWriteByBoardBno(boards.get(0).getBno());
-
-
-
                 if (group != null) {
+                    model.addAttribute("boardWrite", boards);
                     model.addAttribute("board", boards.get(0));
+
                     model.addAttribute("writes", writes);
                 }else{
                     model.addAttribute("error", "찾을 수 없는 모임");
@@ -57,7 +55,6 @@ public class BoardController {
         }else {
             model.addAttribute("error", "모임 번호가 없음");
         }
-
 
         return "board";
     }

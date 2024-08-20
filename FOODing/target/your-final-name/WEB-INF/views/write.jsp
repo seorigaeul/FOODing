@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri = "http://java.sun.com/jstl/core_rt" prefix = "c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/WEB-INF/views/includes/cacheControl.jsp" %>
 <!DOCTYPE html>
 <html>
@@ -13,20 +14,26 @@
 <c:import url = "/top.jsp" />
 <section class="write-section">
     <div class="write-container">
+
         <h1>글쓰기</h1>
+        <form:form action="${pageContext.request.contextPath}/submitWrite" modelAttribute="write" method="post">
         <table>
             <tr>
-                <td>아이디 : ${member}</td>
+                <td>닉네임 : ${member}</td>
             </tr>
             <tr>
-                <td><input type="text" value="글 제목"></td>
+                <td><form:input path="wtitle" title="글 제목" placeholder="글 제목"/></td>
             </tr>
             <tr>
-                <td><textarea>글 내용</textarea></td>
+                <td><form:textarea path="wcontent" placeholder="글 내용"/></td>
             </tr>
 
         </table>
-        <button>글쓰기</button>
+            <form:hidden path="board.bno" value="${bno}" />
+
+        <button type="submit">글쓰기</button>
+        </form:form>
     </div>
+
 </section>
 <c:import url = "/bottom.jsp" />

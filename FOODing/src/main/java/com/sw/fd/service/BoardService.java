@@ -38,4 +38,6 @@ public class BoardService {
 
     }
 
+    public List<Board> getBoardByBno(int bno) { return boardRepository.findByBno(bno);
+    }
 }
