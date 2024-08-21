@@ -47,6 +47,20 @@
             </tbody>
         </table>
         <div class="btnupdate"><button>수정</button></div>
+
+        <div class="pagination">
+            <c:forEach var="i" begin="1" end="${totalPages}">
+                <c:choose>
+                    <c:when test="${i == currentPage}">
+                        <span>${i}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="?page=${i}&size=${size}&gno=${board.group.gno}">${i}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </div>
+
         <input type="text">
         <span class="btnsearch"><button>검색</button></span>
     </div>

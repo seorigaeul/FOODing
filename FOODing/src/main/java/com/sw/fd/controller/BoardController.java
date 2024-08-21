@@ -31,21 +31,33 @@ public class BoardController {
     private WriteService writeService;
 
     @GetMapping("/board")
-    public String showBoard(HttpServletRequest request, Model model) {
+    public String showBoard(@RequestParam(defaultValue = "1") int page,
+                            @RequestParam(defaultValue = "2") int size,
+                            HttpServletRequest request, Model model) {
         String gnumber = request.getParameter("gno");
         int gno = Integer.parseInt(gnumber);
 
         GroupDTO group = groupService.getGroupById(gno);
         List<Board> boards = boardService.getBoardByGroupGno(gno);
-        List<Write> writes = writeService.getWriteByBoardBno(boards.get(0).getBno());
+
+        if (boards.isEmpty()) {
+            model.addAttribute("error", "해당 모임에 게시판이 없습니다.");
+            return "board";
+        }
+        int bno = boards.get(0).getBno();
+        List<Write> writes= writeService.getWritesByBoardBnoWithPagination(bno, page, size);
+        int totalWrites = writeService.countWritesByBoardBno(bno);
+        int totalPages = (int) Math.ceil((double) totalWrites / size);
+
 
         if (gnumber != null) {
             try{
                 if (group != null) {
                     model.addAttribute("boardWrite", boards);
                     model.addAttribute("board", boards.get(0));
-
                     model.addAttribute("writes", writes);
+                    model.addAttribute("currentPage", page);
+                    model.addAttribute("totalPages", totalPages);
                 }else{
                     model.addAttribute("error", "찾을 수 없는 모임");
                 }
