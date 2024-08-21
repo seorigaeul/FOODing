@@ -37,11 +37,11 @@ section {
 }
 
 .mainSliderList {
-    border : 1px solid black;
-    border-radius : 10px;
+    border-top: 2px solid #444444;
+    border-bottom: 2px solid #444444;
     width : 80%;
-    height : 500px;
-    margin : 3% auto;
+    height : 400px;
+    margin : 3% auto 0;
     position : relative;
     overflow : hidden;
     list-style : none;
@@ -105,39 +105,124 @@ section {
     background-color: transparent; /* 배경 색상 투명으로 설정 */
 }
 
+
+/*---------------------------메인 콘텐츠를 위해 추가(다혜)--------------------------------*/
 .show-area2{
+    margin-top: 1%;
     display: flex;
     justify-content: center;
     min-height: 160px;
 }
 
-.show-area2 > div{
+.show-area2 > div:first-child{
+    /* background-color: #ffffff; */
+    height: max-content;
+    width: 70%;
+    /*    border: transparent;
+    background-color: #f0f0f0;
+    border-radius: 30px;*/
+}
+
+.group-show-area{
+    width: 30%;
+    border-top: 3px solid #f5ba00;
+    border-bottom: 3px solid #f5ba00;
+}
+
+#category-title{
+    align-content: center;
     margin: 0 auto;
-    width: 45%;
-    border: 2px solid #f5ba00;
-    border-radius: 30px;
+    border: none;
+    /* width: 100%; */
+    /* background: #ffecd1; */
+    /* border-radius: 44%; */
+    width: 100%;
+    font-size: 20px;
+    height: 40px;
+    font-weight: bold;
 }
 .category-area table{
-    width: 100%;
-    height: 100%
+    display: inline-block;
+    width: 75%;
+}
+
+.category-area tbody{
+    display: inline-block;
 }
 
 .category-area tr{
-
+    display: table-row;
 }
 
 .category-area td {
+    width: 120px;
+    border-collapse: collapse;
+    margin: auto;
     text-align: center;
-    vertical-align: middle;
 }
 
 .category-area td img,
 .category-area td button {
     display: block;
-    margin: 0 auto;
+    margin: 4px auto;
 }
 
 .category-area table img{
     width: 40px;
     height: 40px;
+}
+
+.category-area td button {
+    background-color: white;
+    border-radius: 40%;
+    width: max-content;
+    border: transparent;
+    background-color: transparent;
+}
+
+.each-group-area{
+    margin-bottom: 20px;
+    text-align: -webkit-center;
+}
+
+.group-show-area table {
+    border: none;
+    /*    width : 100%;
+        height : 100%;*/
+    margin-top : 5px;
+}
+
+.group-show-area table th, .group-show-area table td {
+    border: none;
+    /*    padding : 12px;*/
+    text-align : center;
+}
+
+.group-img{
+    width: 70px;
+    height: 70px;
+    border-radius: 40%;
+}
+
+#group-area-title {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.show-area3{
+    margin-top: 2%;
+    margin-bottom: 3%;
+    gap: 130px;
+    display: flex;
+    justify-content: center;
+    min-height: 160px;
+}
+
+.show-area3 .group-show-area{
+    height: max-content;
+    width: 30%;
+    min-width: 20%;
+    align-self: center;
 }

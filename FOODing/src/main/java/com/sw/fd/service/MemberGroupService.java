@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 @Service
@@ -156,5 +157,28 @@ public class MemberGroupService {
                 }
             }
         }
+    }
+
+    public int getMemberJauth(String memberId, int gno) {
+        MemberGroup memberGroup = memberGroupRepository.findByGroupGnoAndMemberMid(gno, memberId);
+        return memberGroup != null ? memberGroup.getJauth() : -1; // 권한이 없는 경우 -1 반환
+    }
+
+
+    /*-------------------------------------- 메인화면에 모임방을 위해 추가한 메서드들 (다혜) ------------------------------------------------*/
+
+    public String findMnicksByGroupGno(Integer gno) {
+        List<MemberGroup> memberGroups = memberGroupRepository.findByGroupGnoIn(List.of(gno));
+        StringJoiner allMemberString = new StringJoiner(" ");
+
+        for (MemberGroup memberGroup : memberGroups) {
+            allMemberString.add(memberGroup.getMember().getMnick());
+        }
+        return allMemberString.toString();
+    }
+
+    public MemberGroup getLeaderByGno(int gno) {
+        List<MemberGroup> memberGroups = memberGroupRepository.findByGroupGnoAndJauthIsOne(gno);
+        return memberGroups.get(0);
     }
 }
