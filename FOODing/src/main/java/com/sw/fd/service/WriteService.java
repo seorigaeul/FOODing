@@ -46,4 +46,11 @@ public class WriteService {
         return writeRepository.countByBoardBno(bno);
     }
 
+    public Write findByWno(int wno) {
+        Write write = (Write) writeRepository.findByWno(wno).orElse(null);
+        if (write != null) {
+            write.setDateToString(write.getWdate().format(DateTimeFormatter.ofPattern("yy-MM-dd")));
+        }
+        return write;
+    }
 }

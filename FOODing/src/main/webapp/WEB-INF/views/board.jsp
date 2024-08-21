@@ -37,7 +37,7 @@
             <c:forEach var="write" items="${writes}">
                     <tr>
                         <td>${write.wno}</td>
-                        <td><a href="#">${write.wtitle}</a></td>
+                        <td><a href="${pageContext.request.contextPath}/read?wno=${write.wno}">${write.wtitle}</a></td>
                         <td>${write.member.mnick}</td>
                         <td>${write.dateToString}</td>
                     </tr>

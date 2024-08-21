@@ -55,4 +55,20 @@ public class WriteController {
 
         return "redirect:/board?gno="+boardService.getGnoByBno(write.getBoard().getBno());
     }
+
+    @GetMapping("/read")
+    public String showReadWrite(@RequestParam("wno") int wno, HttpSession session, Model model){
+        Write write = writeService.findByWno(wno);
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
+        if (write != null) {
+            model.addAttribute("write", write); // 글 정보를 모델에 추가
+            boolean canEdit = loggedInMember != null && loggedInMember.getMno() == write.getMember().getMno();
+            model.addAttribute("canEdit", canEdit);
+         } else {
+             model.addAttribute("error", "없는 정보입니다.");
+         }
+         return "read";
+
+    }
 }
