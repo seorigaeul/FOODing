@@ -38,6 +38,11 @@ public class BoardService {
 
     }
 
-    public List<Board> getBoardByBno(int bno) { return boardRepository.findByBno(bno);
+    public Board getBoardByBno(int bno) { return boardRepository.findByBno(bno);
+    }
+
+    // bno에 대한  gno를 반환받기 위해 작성(다혜)
+    public int getGnoByBno(int bno) {
+        return boardRepository.findGnoByBno(bno);
     }
 }

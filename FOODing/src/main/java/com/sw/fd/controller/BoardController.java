@@ -34,8 +34,7 @@ public class BoardController {
     public String showBoard(@RequestParam(defaultValue = "1") int page,
                             @RequestParam(defaultValue = "2") int size,
                             HttpServletRequest request, Model model) {
-        String gnumber = request.getParameter("gno");
-        int gno = Integer.parseInt(gnumber);
+        Integer gno = Integer.parseInt(request.getParameter("gno"));
 
         GroupDTO group = groupService.getGroupById(gno);
         List<Board> boards = boardService.getBoardByGroupGno(gno);
@@ -50,7 +49,7 @@ public class BoardController {
         int totalPages = (int) Math.ceil((double) totalWrites / size);
 
 
-        if (gnumber != null) {
+        if (gno != null) {
             try{
                 if (group != null) {
                     model.addAttribute("boardWrite", boards);

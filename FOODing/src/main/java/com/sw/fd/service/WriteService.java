@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -23,13 +24,22 @@ public class WriteService {
     }
 
     public List<Write> getWritesByBoardBnoWithPagination(int bno, int page, int size) {
-        int offset = (page - 1) * size;
-        List<Write> writeList = writeRepository.findWritesByBoardBnoWithPagination(bno, size, offset);
-        for (Write write : writeList) {
+
+        // 시간순으로 정렬 가능하도록 레파지토리 단계에서는 전체 게시글을 가져오도록 수정(다혜)
+        List<Write> writeList = writeRepository.findByBoardBno(bno);
+        writeList.sort(Comparator.comparing(Write::getWdate));
+        int start = (page - 1) * size;
+        int end = Math.min(start + size, writeList.size());
+
+        // 페이지 범위 내의 리스트만 추출
+        List<Write> paginatedWriteList = writeList.subList(start, end);
+
+        // 날짜 포맷팅
+        for (Write write : paginatedWriteList) {
             write.setDateToString(write.getWdate().format(DateTimeFormatter.ofPattern("yy-MM-dd")));
         }
 
-        return writeList;
+        return paginatedWriteList;
     }
 
     public int countWritesByBoardBno(int bno) {

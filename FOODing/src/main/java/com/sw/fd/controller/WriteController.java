@@ -53,6 +53,6 @@ public class WriteController {
         writeService.saveWrite(write);
         model.addAttribute("message", "글쓰기 성공!");
 
-        return "redirect:/successPage";
+        return "redirect:/board?gno="+boardService.getGnoByBno(write.getBoard().getBno());
     }
 }

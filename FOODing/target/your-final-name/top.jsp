@@ -14,6 +14,44 @@
         <a class = "header2" href = "${pageContext.request.contextPath}/main">ing</a>
         <a class = "header2" href = "${pageContext.request.contextPath}/main">
             <img src = "${pageContext.request.contextPath}/resources/images/chefudding.png" width = "100px" height = "100px">
+
+            <!-- 알림 기능 추가(희진) -->
+            <div class="anb">
+
+                    <c:choose>
+                        <c:when test="${hasAlarms}">
+                            <c:forEach items="${alarms}" var="alarm">
+                        <div class="subalarm">
+                                <div>
+                                    <c:choose>
+                                        <c:when test="${alarm.atype == '모임장 초대'}">
+                                            <c:out value="${alarm.message} (모임장)" escapeXml="false"/>
+                                        </c:when>
+                                        <c:when test="${alarm.atype == '일반 회원 초대'}">
+                                            <c:out value="${alarm.message} (일반회원)" escapeXml="false"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div>알림 내용</div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <!-- 확인 및 삭제 버튼 추가 -->
+                                <div class="button-group">
+                                    <button type="button" class="btn btn-primary btn-sm">확인</button>
+                                    <button type="button" class="btn btn-danger btn-sm">삭제</button>
+                                </div>
+                        </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                        <div class="subalarm">
+                            <div>알림이 없습니다.</div>
+                        </div>
+                        </c:otherwise>
+                    </c:choose>
+
+            </div>
+
         </a>
         <div class = "hello2">
             <table border = "0" align = "center">
@@ -29,12 +67,17 @@
                 </tr>
                 <tr>
                     <td align = "center">
-                        <span>
-                            <a class = "bell" href = "#">
-                                <img src = "${pageContext.request.contextPath}/resources/images/bell.png" width = "30px" height = "30px">
-                            </a>
-                        </span>
-                        <span>|</span>
+
+                        <!-- 알림 기능 추가(희진) -->
+                        <c:if test="${sessionScope.loggedInMember != null}">
+                            <span>
+                                <a class = "bell" href = "#">
+                                    <img src = "${pageContext.request.contextPath}/resources/images/bell.png" width = "30px" height = "30px">
+                                </a>
+                            </span>
+                            <span>|</span>
+                        </c:if>
+
                         <span>
                              <c:if test="${sessionScope.loggedInMember != null}">
                                  <a class="helloBox" href="<%= request.getContextPath() %>/myPage">마이페이지</a>
