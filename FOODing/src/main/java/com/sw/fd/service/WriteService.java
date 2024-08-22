@@ -1,12 +1,10 @@
 package com.sw.fd.service;
 
-import com.sw.fd.entity.Board;
 import com.sw.fd.entity.Write;
 import com.sw.fd.repository.WriteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -53,4 +51,15 @@ public class WriteService {
         }
         return write;
     }
+
+    public Write updateWrite(Write write) {
+
+        return writeRepository.save(write);
+    }
+
+    public void deleteWrite(int wno) {
+        writeRepository.delete(wno);
+    }
 }
+
+

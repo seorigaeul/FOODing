@@ -40,6 +40,8 @@ public class BoardController {
         GroupDTO group = groupService.getGroupById(gno);
         List<Board> boards = boardService.getBoardByGroupGno(gno);
 
+
+
         if (boards.isEmpty()) {
             model.addAttribute("error", "해당 모임에 게시판이 없습니다.");
             return "board";

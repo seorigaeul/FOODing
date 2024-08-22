@@ -72,4 +72,5 @@
 .read-container .button-container .right-btn{
     display: flex;
     gap: 10px;
+    margin: 10px;
 }
