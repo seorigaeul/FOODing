@@ -32,10 +32,11 @@ public class BoardController {
 
     @GetMapping("/board")
     public String showBoard(@RequestParam(defaultValue = "1") int page,
-                            @RequestParam(defaultValue = "2") int size,
-                            HttpServletRequest request, Model model) {
+                            @RequestParam(defaultValue = "10") int size,
+                            HttpServletRequest request, HttpSession session,Model model) {
         Integer gno = Integer.parseInt(request.getParameter("gno"));
 
+        session.setAttribute("gno", gno);
         GroupDTO group = groupService.getGroupById(gno);
         List<Board> boards = boardService.getBoardByGroupGno(gno);
 

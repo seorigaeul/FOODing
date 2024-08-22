@@ -61,7 +61,11 @@ public class WriteController {
         Write write = writeService.findByWno(wno);
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
 
+        Integer gno = (Integer) session.getAttribute("gno");
+        System.out.println("read gno : " + gno);
         if (write != null) {
+            model.addAttribute("gno", gno);
+
             model.addAttribute("write", write); // 글 정보를 모델에 추가
             boolean canEdit = loggedInMember != null && loggedInMember.getMno() == write.getMember().getMno();
             model.addAttribute("canEdit", canEdit);

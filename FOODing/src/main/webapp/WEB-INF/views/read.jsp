@@ -6,13 +6,13 @@
 <head>
     <meta charset = "UTF-8">
     <title>FOODing 모임 게시판</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/read.css">
 
 </head>
 <body>
 <c:import url = "/top.jsp" />
-<section class="board-section">
-    <div class="board-container">
+<section class="read-section">
+    <div class="read-container">
 
         <h1>글읽기</h1>
         <table>
@@ -24,12 +24,12 @@
                 <td>${write.wno}</td>
             </tr>
             <tr>
-                <td>글 제목</td>
-                <td><h2>${write.wtitle}</h2></td>
-            </tr>
-            <tr>
                 <td>작성날짜</td>
                 <td>${write.dateToString}</td>
+            </tr>
+            <tr>
+                <td>글 제목</td>
+                <td>${write.wtitle}</td>
             </tr>
             <tr>
                 <td>글 내용</td>
@@ -37,20 +37,28 @@
             </tr>
         </table>
 
-        <div class="button">
-            <button type="submit">목록</button>
+        <div class="button-container">
+
             <c:choose>
                 <c:when test="${canEdit}">
-                    <a href="${pageContext.request.contextPath}/writeEdit?wno=${write.wno}">수정</a>
-                    <button type="submit">수정</button>
-                    <button type="submit">삭제</button>
+                    <div class="left-btn">
+                        <a href="${pageContext.request.contextPath}/board?gno=${gno}" class="btnList">목록</a>
+                    </div>
+                    <div class="rite-btn">
+                        <a href="${pageContext.request.contextPath}/board" class="btnUpdate">수정</a>
+                        <a href="${pageContext.request.contextPath}/board" class="btnDelete">삭제</a>
+                    </div>
                 </c:when>
                 <c:otherwise>
-                    <p>수정 권한이 없습니다.</p>
+                    <div class="left-btn">
+                        <a href="${pageContext.request.contextPath}/board" class="btn">목록</a>
+                    </div>
                 </c:otherwise>
             </c:choose>
 
         </div>
+        <form:hidden path="board.bno" value="${bno}" />
+
 
     </div>
 </section>

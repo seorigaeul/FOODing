@@ -27,7 +27,7 @@ public class WriteService {
 
         // 시간순으로 정렬 가능하도록 레파지토리 단계에서는 전체 게시글을 가져오도록 수정(다혜)
         List<Write> writeList = writeRepository.findByBoardBno(bno);
-        writeList.sort(Comparator.comparing(Write::getWdate));
+        writeList.sort(Comparator.comparing(Write::getWdate).reversed());
         int start = (page - 1) * size;
         int end = Math.min(start + size, writeList.size());
 
