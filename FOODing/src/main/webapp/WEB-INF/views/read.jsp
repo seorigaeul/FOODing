@@ -44,10 +44,10 @@
                     <div class="left-btn">
                         <a href="${pageContext.request.contextPath}/board?gno=${gno}" class="btnList">목록</a>
                     </div>
-                    <div class="rigte-btn">
+                    <div class="right-btn">
                         <a href="${pageContext.request.contextPath}/writeUpdate?wno=${write.wno}" class="btnUpdate">수정</a>
                     </div>
-                    <div class="rigte-btn">
+                    <div class="right-btn">
                         <a href="#" class="btnDelete" onclick="document.getElementById('deleteForm').submit(); return false;">삭제</a>
 
                         <form id="deleteForm" action="${pageContext.request.contextPath}/writeDelete" method="post">

@@ -86,12 +86,6 @@
                 </c:choose>
             </c:forEach>
         </div>
-        <div class="btnsearch-container">
-        <div class="btnsearch">
-            <input type="text">
-            <span><button>검색</button></span>
-        </div>
-        </div>
     </div>
 </section>
 <c:import url = "/bottom.jsp" />
